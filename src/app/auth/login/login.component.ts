@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {first} from 'rxjs/operators';
+import {AuthService} from '../auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +11,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  loginForm: FormGroup;
+  returnUrl: string | undefined;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private route: ActivatedRoute) {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/list']);
+    }
+    this.loginForm = new FormGroup({
+      email: new FormControl(),
+      password: new FormControl()
+    });
   }
 
+  ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/list';
+  }
+
+  login(): void {
+    this.authService.authenticate(this.loginForm.value)
+      .pipe(first())
+      .subscribe(success => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          alert('Invalid credentials!');
+        });
+  }
 }

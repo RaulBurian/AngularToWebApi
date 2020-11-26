@@ -17,6 +17,13 @@
         </a>
       </div>
     </div>
+    <div *ngIf="loggedIn" class="row navbar-nav mr-0 ml-auto">
+      <div class="col">
+        <a class="nav-link pointer" (click)="logout()">
+          Logout
+        </a>
+      </div>
+    </div>
   </div>
 </nav>
 <div class="container-fluid">
@@ -45,30 +52,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!loggedIn" class="col-8 margin-top">
-      <div class="row ">
-        <div class="col-5 content-section">
-          <div class="text-center">
-            Welcome to the best post book site!
-            <br>
-            Please Log In to continue!
-          </div>
-          <div [formGroup]="loginForm" class="form-group mt-3">
-            <label for="email" class="control-label">
-              Email
-            </label>
-            <input id="email" formControlName="email" type="text" class="form-control">
-            <label for="password" class="control-label">
-              Password
-            </label>
-            <input id="password" formControlName="password" type="password" class="form-control">
-            <br>
-            <button type="button" class="btn btn-secondary" (click)="login()">Login</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="loggedIn" class="col-9 margin-top">
+    <div class="col-8 margin-top">
       <router-outlet></router-outlet>
     </div>
   </div>

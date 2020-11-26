@@ -1,1 +1,21 @@
-<p>register works!</p>
+<div class="row ">
+  <div class="col-5 content-section">
+    <div class="text-center">
+      Here you can register to our site!
+      <br>
+      Please fill out the form below to register
+    </div>
+    <div [formGroup]="registerForm" class="form-group mt-3">
+      <label for="email" class="control-label">
+        Email
+      </label>
+      <input id="email" formControlName="email" type="text" class="form-control">
+      <label for="password" class="control-label">
+        Password
+      </label>
+      <input id="password" formControlName="password" type="password" class="form-control">
+      <br>
+      <button type="button" class="btn btn-secondary" (click)="register()">Register</button>
+    </div>
+  </div>
+</div>
