@@ -3,65 +3,77 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {AuthenticationRequest} from './contracts/requests/AuthenticationRequest';
 import {AuthenticationResponse} from './contracts/responses/AuthenticationResponse';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from '../shared/models/User';
+import {UserModel} from '../shared/models/user.model';
 import {map} from 'rxjs/operators';
 import {RegistrationRequest} from './contracts/requests/RegistrationRequest';
 import {RegistrationResponse} from './contracts/responses/RegistrationResponse';
 import {LoginRequest} from './contracts/requests/LoginRequest';
 import {LoginResponse} from './contracts/responses/LoginResponse';
+import {Routes} from '../shared/routes/routes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseHttp = 'https://localhost:5001/api/v1/identity';
-  private currentUserSubject: BehaviorSubject<User | null>;
-  private currentUser: Observable<User | null>;
+  private currentUserSubject: BehaviorSubject<UserModel | null>;
+  private currentUserObservable: Observable<UserModel | null>;
+  private errorSubject: BehaviorSubject<Error | null>;
+  private errorObservable: Observable<Error | null>;
 
   constructor(private httpClient: HttpClient) {
     const storedUser: string | null = localStorage.getItem('user');
-    let storedUserJson: User | null;
+    let storedUserJson: UserModel | null;
     if (storedUser) {
       storedUserJson = JSON.parse(storedUser);
     } else {
       storedUserJson = null;
     }
-    this.currentUserSubject = new BehaviorSubject<User | null>(storedUserJson);
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.currentUserSubject = new BehaviorSubject<UserModel | null>(storedUserJson);
+    this.currentUserObservable = this.currentUserSubject.asObservable();
+    this.errorSubject = new BehaviorSubject<Error | null>(null);
+    this.errorObservable = this.errorSubject.asObservable();
   }
 
-  public authenticate(request: LoginRequest): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.baseHttp}/login`, request)
+  authenticate(request: LoginRequest): Observable<LoginResponse> {
+    return this.httpClient.post<LoginResponse>(Routes.Auth.LOGIN, request)
       .pipe(map(response => {
         this.storeUserInLocalStorage(request, response);
         return response;
       }));
   }
 
-  public logout(): void {
+  logout(): void {
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
 
-  public register(request: RegistrationRequest): Observable<RegistrationResponse>{
-    return this.httpClient.post<RegistrationResponse>(`${this.baseHttp}/register`,request)
-      .pipe(map(response=>{
-        this.storeUserInLocalStorage(request,response);
+  register(request: RegistrationRequest): Observable<RegistrationResponse> {
+    return this.httpClient.post<RegistrationResponse>(Routes.Auth.REGISTER, request)
+      .pipe(map(response => {
+        this.storeUserInLocalStorage(request, response);
         return response;
       }));
   }
 
-  public get currentUserValue(): User | null {
+  get currentUserValue(): UserModel | null {
     return this.currentUserSubject.value;
   }
 
-  public get currentUserObservable(): Observable<User | null>{
-    return this.currentUser;
+  get currentUserToObserve(): Observable<UserModel | null> {
+    return this.currentUserObservable;
+  }
+
+  set sessionError(error: Error | null){
+    this.errorSubject.next(error);
+  }
+
+  get sessionErrorToObserve(): Observable<Error | null> {
+    return this.errorObservable;
   }
 
   private storeUserInLocalStorage(request: AuthenticationRequest, response: AuthenticationResponse) {
-    let userToStore: User = {
+    let userToStore: UserModel = {
       email: request.email,
       token: response.token
     };

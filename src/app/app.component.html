@@ -1,23 +1,23 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-50 static">
+<nav class="navbar navbar-expand-sm navbar-light bg-light mb-50 static">
   <a class="navbar-brand" href="#">The Post Book</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <div *ngIf="!loggedIn" class="row navbar-nav mr-0 ml-auto">
+    <div *ngIf="!(user$ | async | userExists)" class="row navbar-nav mr-0 ml-auto">
       <div class="col">
-        <a class="nav-link" routerLink="login">
+        <a class="nav-link" routerLink="login" (click)="clearSessionError()">
           Login
         </a>
       </div>
       <div class="col">
-        <a class="nav-link" routerLink="register">
+        <a class="nav-link" routerLink="register" (click)="clearSessionError()">
           Register
         </a>
       </div>
     </div>
-    <div *ngIf="loggedIn" class="row navbar-nav mr-0 ml-auto">
+    <div *ngIf="(user$ | async | userExists)" class="row navbar-nav mr-0 ml-auto">
       <div class="col">
         <a class="nav-link pointer" (click)="logout()">
           Logout
@@ -26,10 +26,14 @@
     </div>
   </div>
 </nav>
+
 <div class="container-fluid">
+  <div *ngIf="(sessionError$ | async | errorExists)" class="alert alert-danger">
+    Your session has expired
+  </div>
   <div class="row">
-    <div class="col-2 flex-column">
-      <div *ngIf="loggedIn" class="sidebar">
+    <div class="col-6 col-sm-2 flex-column">
+      <div *ngIf="(user$ | async | userExists)" class="sidebar">
         <div class="list-header">
           Posts section:
         </div>

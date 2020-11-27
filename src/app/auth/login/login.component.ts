@@ -31,12 +31,14 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.authService.sessionError=null;
     this.authService.authenticate(this.loginForm.value)
       .pipe(first())
       .subscribe(success => {
           this.router.navigate([this.returnUrl]);
         },
         error => {
+        console.log(error);
           alert('Invalid credentials!');
         });
   }
