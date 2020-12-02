@@ -15,7 +15,7 @@ import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {UnAuthorizedInterceptor} from './interceptors/un-authorized.interceptor';
 import { UserExistsPipe } from './pipes/user-exists.pipe';
 import { ErrorExistsPipe } from './pipes/error-exists.pipe';
-import {UserStorageService} from './shared/services/user-storage.service';
+import {StorageService} from './shared/services/storage.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditPostComponent } from './posts/edit-post/edit-post.component';
 import { CreatePostModalComponent } from './posts/create-post-modal/create-post-modal.component';
@@ -45,7 +45,7 @@ import { CreatePostModalComponent } from './posts/create-post-modal/create-post-
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: UnAuthorizedInterceptor, multi: true},
     AuthService,
-    UserStorageService
+    StorageService
   ],
   bootstrap: [AppComponent]
 })

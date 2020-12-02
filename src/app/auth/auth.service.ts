@@ -10,8 +10,9 @@ import {RegistrationResponse} from './contracts/responses/RegistrationResponse';
 import {LoginRequest} from './contracts/requests/LoginRequest';
 import {LoginResponse} from './contracts/responses/LoginResponse';
 import {Routes} from '../shared/routes/routes';
-import {UserStorageService} from '../shared/services/user-storage.service';
+import {StorageService} from '../shared/services/storage.service';
 import {SessionError} from '../shared/errors/session-error';
+import {USERKEY} from '../shared/constants/user.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class AuthService {
   private errorSubject: BehaviorSubject<SessionError | null>;
   private readonly errorObservable: Observable<SessionError | null>;
 
-  constructor(private httpClient: HttpClient, private storage: UserStorageService) {
-    const storedUser: string | null = this.storage.getUser();
+  constructor(private httpClient: HttpClient, private storage: StorageService) {
+    const storedUser: string | null = this.storage.getItem(USERKEY);
     let storedUserJson: UserModel | null;
     if (storedUser) {
       storedUserJson = JSON.parse(storedUser);
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.storage.removeUser();
+    this.storage.removeKey(USERKEY);
     this.currentUserSubject.next(null);
   }
 
@@ -79,7 +80,7 @@ export class AuthService {
       email: request.email,
       token: response.token
     };
-    this.storage.storeUser(userToStore);
+    this.storage.storeItem(USERKEY,JSON.stringify(userToStore));
     this.currentUserSubject.next(userToStore);
   }
 
