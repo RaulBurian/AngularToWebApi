@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
 import {Observable, Subscription} from 'rxjs';
 import {PostResponseObject} from '../contracts/PostResponseObject';
-import {filter, map} from 'rxjs/operators';
+import {filter, first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-posts',
@@ -64,21 +64,24 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   //V1 with arrow function
-  private filterCurrentPage=(posts: PostResponseObject[]) => {
-    console.log(posts);
-    console.log(this.filterKey);
-    const p=posts.filter(post => post.name.includes(this.filterKey));
+  private filterCurrentPage = (posts: PostResponseObject[]) => {
+    // console.log(posts);
+    // console.log(this.filterKey);
+    const p = posts.filter(post => post.name.includes(this.filterKey));
     console.log(p);
     return p;
   };
 
   //V2
-  private filterCurrentPageV2(posts: PostResponseObject[],filterKey: string){
-    return posts.filter(post=>post.name.includes(filterKey));
+  private filterCurrentPageV2(posts: PostResponseObject[], filterKey: string) {
+    return posts.filter(post => post.name.includes(filterKey));
   }
 
-  deletePost() {
-
+  deletePost(postId: string) {
+    this.postsService.deletePost(postId)
+      .pipe(first()).subscribe(_ => {
+      this.posts = this.posts.filter(post => post.id != postId);
+    });
   }
 
   editPost() {

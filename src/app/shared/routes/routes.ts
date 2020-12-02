@@ -11,5 +11,6 @@ export class Routes{
   static Post= class{
     static GETALL: string=`${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static GETPAGINATED: string=`${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/postsPaginated`;
+    static DELETE: string=`${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
   };
 }

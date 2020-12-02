@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PostResponseObject} from './contracts/PostResponseObject';
 import {Routes} from '../shared/routes/routes';
@@ -32,5 +32,9 @@ export class PostsService {
         }
       })
       .pipe(map(response => response.data));
+  }
+
+  deletePost(postId: string){
+    return this.httpClient.delete(`${Routes.Post.DELETE}/${postId}`);
   }
 }
