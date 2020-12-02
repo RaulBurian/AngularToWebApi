@@ -15,6 +15,7 @@ import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {UnAuthorizedInterceptor} from './interceptors/un-authorized.interceptor';
 import { UserExistsPipe } from './pipes/user-exists.pipe';
 import { ErrorExistsPipe } from './pipes/error-exists.pipe';
+import {UserStorageService} from './shared/services/user-storage.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ErrorExistsPipe } from './pipes/error-exists.pipe';
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: UnAuthorizedInterceptor, multi: true},
-    AuthService
+    AuthService,
+    UserStorageService
   ],
   bootstrap: [AppComponent]
 })

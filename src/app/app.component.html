@@ -5,7 +5,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <div *ngIf="!(user$ | async | userExists)" class="row navbar-nav mr-0 ml-auto">
+    <div *ngIf="!(user$ | async)" class="row navbar-nav mr-0 ml-auto">
       <div class="col">
         <a class="nav-link" routerLink="login" (click)="clearSessionError()">
           Login
@@ -17,7 +17,7 @@
         </a>
       </div>
     </div>
-    <div *ngIf="(user$ | async | userExists)" class="row navbar-nav mr-0 ml-auto">
+    <div *ngIf="(user$ | async )" class="row navbar-nav mr-0 ml-auto">
       <div class="col">
         <a class="nav-link pointer" (click)="logout()">
           Logout
@@ -28,12 +28,12 @@
 </nav>
 
 <div class="container-fluid">
-  <div *ngIf="(sessionError$ | async | errorExists)" class="alert alert-danger">
-    Your session has expired
+  <div *ngIf="(sessionError$ | async )" class="alert alert-danger">
+    {{sessionError$ | async}}
   </div>
   <div class="row">
     <div class="col-6 col-sm-2 flex-column">
-      <div *ngIf="(user$ | async | userExists)" class="sidebar">
+      <div *ngIf="(user$ | async )" class="sidebar">
         <div class="list-header">
           Posts section:
         </div>
@@ -61,3 +61,4 @@
     </div>
   </div>
 </div>
+
