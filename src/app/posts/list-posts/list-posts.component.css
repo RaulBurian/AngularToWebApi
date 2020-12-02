@@ -1,0 +1,16 @@
+.mar-left{
+  float: right;
+  margin-left: 10px;
+}
+
+.dark-grey{
+  color:#495057;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+::placeholder{
+  opacity: 0.5;
+}

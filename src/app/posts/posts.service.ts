@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PostResponseObject} from './contracts/PostResponseObject';
@@ -12,14 +12,25 @@ import {PostResponse} from './contracts/PostResponse';
 export class PostsService {
 
 
-  constructor(private httpClient:HttpClient) {
+  constructor(private httpClient: HttpClient) {
 
   }
 
-  getPosts(): Observable<PostResponseObject[]>{
+  getPosts(): Observable<PostResponseObject[]> {
     return this.httpClient.get<PostResponse>(Routes.Post.GETALL)
-      .pipe(map(response=>{
+      .pipe(map(response => {
         return response.data;
       }));
+  }
+
+  getPostsPaginated(pageNumber: number, pageSize: number): Observable<PostResponseObject[]> {
+    return this.httpClient.get<PostResponse>(Routes.Post.GETPAGINATED,
+      {
+        params: {
+          pageSize: pageSize.toString(),
+          pageNumber: pageNumber.toString()
+        }
+      })
+      .pipe(map(response => response.data));
   }
 }
