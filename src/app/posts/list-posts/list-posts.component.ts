@@ -2,7 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
 import {Observable, Subscription} from 'rxjs';
 import {PostResponseObject} from '../contracts/PostResponseObject';
-import {filter, first, map} from 'rxjs/operators';
+import {filter, first, map, takeWhile} from 'rxjs/operators';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EditPostComponent} from '../edit-post/edit-post.component';
+import {CreatePostModalComponent} from '../create-post-modal/create-post-modal.component';
 
 @Component({
   selector: 'app-list-posts',
@@ -11,80 +14,92 @@ import {filter, first, map} from 'rxjs/operators';
 })
 export class ListPostsComponent implements OnInit, OnDestroy {
 
-  posts: PostResponseObject[] = [];
-  subscriptions: Subscription[] = [];
   pageNumber: number = 1;
   pageSize: number = 7;
   filterKey: string = '';
+  posts$: Observable<PostResponseObject[]>;
 
-  constructor(private postsService: PostsService) {
-    this.subscriptions.push(
-      this.postsService.getPostsPaginated(this.pageNumber, this.pageSize).subscribe(posts => {
-        this.posts = posts;
-      }));
+  constructor(private postsService: PostsService,
+              private modalService: NgbModal) {
+    this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   previousPage() {
     if (this.pageNumber > 1) {
       this.pageNumber--;
-      this.subscriptions.push(
-        this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
-          .pipe(map(this.filterCurrentPage)).subscribe(posts => {
-          this.posts = posts;
-        }));
+      this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
+        .pipe(map(this.filterCurrentPage));
     }
   }
 
   nextPage() {
-    let tempData: PostResponseObject[];
-    this.subscriptions.push(
-      this.postsService.getPostsPaginated(this.pageNumber + 1, this.pageSize)
-        .pipe(map(this.filterCurrentPage)).subscribe(posts => {
-        tempData = posts;
-        if (tempData.length > 0) {
-          this.pageNumber++;
-          this.posts = tempData;
+    this.pageNumber++;
+    this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
+      .pipe(first(), map(posts => {
+        if (posts.length > 0) {
+          this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
+            .pipe(map(this.filterCurrentPage));
+        } else {
+          this.pageNumber--;
         }
-      }));
-  }
-
-  filterPosts() {
-    this.subscriptions.push(
-      this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
-        .pipe(map(this.filterCurrentPage)).subscribe(posts => {
-        this.posts = posts;
-      }));
-  }
-
-  //V1 with arrow function
-  private filterCurrentPage = (posts: PostResponseObject[]) => {
-    // console.log(posts);
-    // console.log(this.filterKey);
-    const p = posts.filter(post => post.name.includes(this.filterKey));
-    console.log(p);
-    return p;
-  };
-
-  //V2
-  private filterCurrentPageV2(posts: PostResponseObject[], filterKey: string) {
-    return posts.filter(post => post.name.includes(filterKey));
-  }
-
-  deletePost(postId: string) {
-    this.postsService.deletePost(postId)
-      .pipe(first()).subscribe(_ => {
-      this.posts = this.posts.filter(post => post.id != postId);
+        return posts;
+      })).subscribe(_ => {
     });
   }
 
-  editPost() {
+  filterPosts() {
+    this.posts$ = this.posts$.pipe(map(posts => this.filterCurrentPageV2(posts)));
+  }
 
+  private filterCurrentPage = (posts: PostResponseObject[]) => {
+    return posts.filter(post => post.name.includes(this.filterKey));
+  };
+
+  private filterCurrentPageV2(posts: PostResponseObject[]) {
+    return posts.filter(post => post.name.includes(this.filterKey));
+  }
+
+  deletePost(postId: string) {
+    this.postsService.deletePost(postId).subscribe(_ => {
+      this.posts$ = this.posts$.pipe(map(posts => posts.filter(post => post.id != postId)));
+    });
+  }
+
+  editPost(postId: string, postName: string) {
+    const modalRef = this.modalService.open(EditPostComponent);
+    modalRef.componentInstance.postName = postName;
+    modalRef.componentInstance.postId = postId;
+    modalRef.result.then(result => {
+      this.posts$ = this.posts$.pipe(map(posts => {
+        return this.updatePostInCurrentPost(posts, postId, result.postName);
+      }));
+    })
+      .catch(_ => {
+      });
+  }
+
+  addPostModal() {
+    const modalRef = this.modalService.open(CreatePostModalComponent, {size: 'lg'});
+    modalRef.result.then((addedPost) => {
+      this.posts$ = this.posts$.pipe(map(posts => {
+        posts.unshift(addedPost.data);
+        return posts.slice(0, 7);
+      }));
+    }).catch(_ => {
+    });
+  }
+
+  private updatePostInCurrentPost(posts: PostResponseObject[], postId: string, postName: string) {
+    let post = posts.find(post => post.id == postId);
+    if(post){
+      post.name=postName;
+    }
+    return posts;
   }
 }

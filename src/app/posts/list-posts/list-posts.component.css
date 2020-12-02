@@ -14,3 +14,26 @@
 ::placeholder{
   opacity: 0.5;
 }
+
+.add-post-icon{
+  color: #59d5ff;
+}
+
+.add-post-text{
+  font-size: 1.2em;
+  top:-4px;
+  margin-left: 10px;
+  position: relative;
+}
+
+.bdr{
+  border: 1px solid #dddddd;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 20px;
+  background-color: #f9f9f9;
+}
+
+.big{
+  font-size: 1.2em;
+}
