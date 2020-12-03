@@ -6,6 +6,7 @@ import {Routes} from '../shared/routes/routes';
 import {first, map} from 'rxjs/operators';
 import {PostResponse} from './contracts/PostResponse';
 import {CreatePostRequest} from './contracts/CreatePostRequest';
+import {GetCountResponse} from './contracts/GetCountResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,9 @@ export class PostsService {
 
   addPost(request: CreatePostRequest): Observable<PostResponseObject>{
     return this.httpClient.post<PostResponseObject>(Routes.Post.ADD,request).pipe(first());
+  }
+
+  getPostsCount(): Observable<number>{
+    return this.httpClient.get<GetCountResponse>(Routes.Post.COUNT).pipe(first(),map(response=>response.data));
   }
 }

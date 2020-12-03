@@ -14,5 +14,6 @@ export class Routes {
     static ADD: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static DELETE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static UPDATE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
+    static COUNT: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts/count`;
   };
 }

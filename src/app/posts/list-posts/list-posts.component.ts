@@ -22,10 +22,12 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   pageSize: number = 7;
   filterKey: string = '';
   posts$: Observable<PostResponseObject[]>;
+  postsNumber$: Observable<number>;
   isCollapsed: ICollapsed[] = [];
 
   constructor(private postsService: PostsService,
               private modalService: NgbModal) {
+    this.postsNumber$=this.postsService.getPostsCount();
     this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
     Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
@@ -34,30 +36,6 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  previousPage() {
-    if (this.pageNumber > 1) {
-      this.pageNumber--;
-      this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
-        .pipe(map(this.filterCurrentPage));
-    }
-  }
-
-  nextPage() {
-    this.pageNumber++;
-    this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
-      .pipe(first(), map(posts => {
-        if (posts.length > 0) {
-          this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
-            .pipe(map(this.filterCurrentPage));
-          this.isCollapsed.forEach(item => item.collapsed = true);
-        } else {
-          this.pageNumber--;
-        }
-        return posts;
-      })).subscribe(_ => {
-    });
   }
 
   filterPosts() {
@@ -112,7 +90,10 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   toggleCollapse(index: number) {
-    // console.log(index);
     this.isCollapsed[index].collapsed = !this.isCollapsed[index].collapsed;
+  }
+
+  changePage(newPageNumber: number) {
+    this.posts$=this.postsService.getPostsPaginated(newPageNumber,this.pageSize).pipe(map(this.filterCurrentPage));
   }
 }

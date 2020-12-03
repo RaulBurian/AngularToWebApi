@@ -17,7 +17,15 @@ export class CreatePostComponent extends AbstractCreateComponent implements OnIn
   ngOnInit(): void {
   }
 
+  // afterAddCleanup(result:PostResponseObject){
+  //   console.log(`Function this:${this}`);
+  //   console.log(`Arrow Function:${Object.keys(this)}`);
+  //   this.controls.forEach(control => control.setValue(''));
+  // }
+
   afterAddCleanup = (result: PostResponseObject): void => {
+    console.log(`Arrow Function:${this}`);
+    console.log(`Arrow Function:${Object.keys(this)}`);
     this.controls.forEach(control => control.setValue(''));
   };
 }

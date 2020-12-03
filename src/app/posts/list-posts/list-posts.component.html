@@ -24,23 +24,10 @@
     </div>
   </div>
   <div class="col">
-    <nav class="mt-3 big">
-      <ul class="pagination justify-content-end">
-        <li class="page-item pointer" (click)="previousPage()">
-      <span class="page-link" aria-label="Previous">
-        <span aria-hidden="true" class="dark-grey">&laquo;</span>
-      </span>
-        </li>
-        <li class="page-item pointer">
-          <span class="page-link dark-grey">{{pageNumber}}</span>
-        </li>
-        <li class="page-item pointer" (click)="nextPage()">
-      <span class="page-link" aria-label="Next">
-        <span aria-hidden="true" class="dark-grey">&raquo;</span>
-      </span>
-        </li>
-      </ul>
-    </nav>
+    <ngb-pagination class="d-flex justify-content-end mt-3 big" [collectionSize]="postsNumber$ | async | numberNotNull"
+                    [(page)]="pageNumber"
+                    [maxSize]="3" (pageChange)="changePage($event)" [pageSize]="pageSize">
+    </ngb-pagination>
   </div>
 </div>
 

@@ -19,6 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditPostComponent } from './posts/edit-post/edit-post.component';
 import { CreatePostModalComponent } from './posts/create/create-post-modal/create-post-modal.component';
 import { BaseCreateComponent } from './posts/create/base-create/base-create.component';
+import { NumberNotNullPipe } from './pipes/number-not-null.pipe';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { BaseCreateComponent } from './posts/create/base-create/base-create.comp
     EditPostComponent,
     CreatePostModalComponent,
     BaseCreateComponent,
+    NumberNotNullPipe,
   ],
   imports: [
     BrowserModule,
