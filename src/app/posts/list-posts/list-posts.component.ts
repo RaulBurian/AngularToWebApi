@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
-import {Observable, Subscription} from 'rxjs';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {PostResponseObject} from '../contracts/PostResponseObject';
-import {filter, first, map, takeWhile} from 'rxjs/operators';
+import {combineAll, filter, first, map, takeWhile} from 'rxjs/operators';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
@@ -27,7 +27,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   constructor(private postsService: PostsService,
               private modalService: NgbModal) {
-    this.postsNumber$=this.postsService.getPostsCount();
+    this.postsNumber$ = this.postsService.getPostsCount();
     this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
     Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
@@ -94,6 +94,6 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   changePage(newPageNumber: number) {
-    this.posts$=this.postsService.getPostsPaginated(newPageNumber,this.pageSize).pipe(map(this.filterCurrentPage));
+    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize).pipe(map(this.filterCurrentPage));
   }
 }

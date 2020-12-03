@@ -22,14 +22,8 @@ import { NumberNotNullPipe } from './pipes/number-not-null.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    CreatePostComponent,
-    ListPostsComponent,
     LoginComponent,
     RegisterComponent,
-    EditPostComponent,
-    CreatePostModalComponent,
-    BaseCreateComponent,
-    NumberNotNullPipe,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +32,6 @@ import { NumberNotNullPipe } from './pipes/number-not-null.pipe';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
