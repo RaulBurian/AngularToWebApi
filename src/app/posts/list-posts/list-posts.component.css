@@ -16,7 +16,7 @@
 }
 
 .add-post-icon{
-  color: #59d5ff;
+  color: #007bff;
 }
 
 .add-post-text{
@@ -26,7 +26,7 @@
   position: relative;
 }
 
-.bdr{
+.bdr {
   border: 1px solid #dddddd;
   display: inline-block;
   padding: 5px;

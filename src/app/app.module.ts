@@ -12,8 +12,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {UnAuthorizedInterceptor} from './interceptors/un-authorized.interceptor';
-import { UserExistsPipe } from './pipes/user-exists.pipe';
-import { ErrorExistsPipe } from './pipes/error-exists.pipe';
 import {StorageService} from './shared/services/storage.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditPostComponent } from './posts/edit-post/edit-post.component';
@@ -28,8 +26,6 @@ import { NumberNotNullPipe } from './pipes/number-not-null.pipe';
     ListPostsComponent,
     LoginComponent,
     RegisterComponent,
-    UserExistsPipe,
-    ErrorExistsPipe,
     EditPostComponent,
     CreatePostModalComponent,
     BaseCreateComponent,

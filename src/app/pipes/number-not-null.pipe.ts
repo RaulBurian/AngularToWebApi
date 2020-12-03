@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NumberNotNullPipe implements PipeTransform {
 
-  transform(value: number): number {
+  transform(value: number | null): number {
     return value || 0;
   }
 
