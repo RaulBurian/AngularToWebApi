@@ -22,6 +22,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   pageSize: number = 7;
   filterKey: string = '';
   posts$: Observable<PostResponseObject[]>;
+  postsNextPage$: Observable<PostResponseObject[]>;
   postsNumber$: Observable<number>;
   isCollapsed: ICollapsed[] = [];
 
@@ -29,6 +30,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
               private modalService: NgbModal) {
     this.postsNumber$ = this.postsService.getPostsCount();
     this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
+    this.postsNextPage$ = this.postsService.getPostsPaginated(this.pageNumber+1, this.pageSize);
     Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
 
@@ -39,16 +41,16 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   filterPosts() {
-    this.posts$ = this.posts$.pipe(map(posts => this.filterCurrentPageV2(posts)));
+    this.posts$ = combineLatest([this.posts$,this.postsNextPage$]).pipe(map(values=>{
+      const [current,next]=values;
+      const all=current.concat(next);
+      return all.filter(post=>post.name?.includes(this.filterKey)).slice(0,7);
+    }));
   }
 
   private filterCurrentPage = (posts: PostResponseObject[]) => {
     return posts.filter(post => post.name?.includes(this.filterKey));
   };
-
-  private filterCurrentPageV2(posts: PostResponseObject[]) {
-    return posts.filter(post => post.name?.includes(this.filterKey));
-  }
 
   deletePost(postId: string) {
     this.postsService.deletePost(postId).subscribe(_ => {
@@ -94,6 +96,8 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   changePage(newPageNumber: number) {
-    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize).pipe(map(this.filterCurrentPage));
+    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize);
+    this.postsNextPage$ = this.postsService.getPostsPaginated(newPageNumber+1, this.pageSize);
+    this.filterPosts();
   }
 }
