@@ -7,6 +7,10 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create-post-modal/create-post-modal.component';
 
+interface ICollapsed {
+  collapsed: boolean;
+}
+
 @Component({
   selector: 'app-list-posts',
   templateUrl: './list-posts.component.html',
@@ -18,10 +22,12 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   pageSize: number = 7;
   filterKey: string = '';
   posts$: Observable<PostResponseObject[]>;
+  isCollapsed: ICollapsed[] = [];
 
   constructor(private postsService: PostsService,
               private modalService: NgbModal) {
     this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
+    Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
 
   ngOnInit(): void {
@@ -45,6 +51,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
         if (posts.length > 0) {
           this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize)
             .pipe(map(this.filterCurrentPage));
+          this.isCollapsed.forEach(item => item.collapsed = true);
         } else {
           this.pageNumber--;
         }
@@ -89,6 +96,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     modalRef.result.then((addedPost) => {
       this.posts$ = this.posts$.pipe(map(posts => {
         posts.unshift(addedPost.data);
+        this.isCollapsed[0].collapsed = true;
         return posts.slice(0, 7);
       }));
     }).catch(_ => {
@@ -97,9 +105,14 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   private updatePostInCurrentPost(posts: PostResponseObject[], postId: string, postName: string) {
     let post = posts.find(post => post.id == postId);
-    if(post){
-      post.name=postName;
+    if (post) {
+      post.name = postName;
     }
     return posts;
+  }
+
+  toggleCollapse(index: number) {
+    // console.log(index);
+    this.isCollapsed[index].collapsed = !this.isCollapsed[index].collapsed;
   }
 }

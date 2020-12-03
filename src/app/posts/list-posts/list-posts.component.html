@@ -1,11 +1,19 @@
 <input id="search" type="text" class="form-control" placeholder="Search posts" (keyup)="filterPosts()"
        [(ngModel)]="filterKey">
 <ul class="list-group mt-3">
-  <li *ngFor="let post of posts$ | async" class="list-group-item">
-    <span>{{post.name}}</span>
+  <li *ngFor="let post of posts$ | async;index as i" class="list-group-item">
+    <span (click)="toggleCollapse(i)" class="main-item pointer">{{post.name}}</span>
     <i *ngIf="post.canEdit" class="fa fa-trash-o mar-left pointer" aria-hidden="true" (click)="deletePost(post.id)"></i>
     <i *ngIf="post.canEdit" class="fa fa-pencil-square-o mar-left pointer" aria-hidden="true"
        (click)="editPost(post.id,post.name)"></i>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed[i].collapsed">
+      <div class="collapse-item">
+        <span class="collapse-span">Tags:</span>
+        <span *ngFor="let tag of post.tags" class="collapse-span">
+          &#35;{{tag}}
+        </span>
+      </div>
+    </div>
   </li>
 </ul>
 <div class="row">
