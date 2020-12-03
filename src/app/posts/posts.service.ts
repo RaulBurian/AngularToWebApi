@@ -43,7 +43,7 @@ export class PostsService {
     return this.httpClient.put(`${Routes.Post.UPDATE}/${postId}`,{name:newPostName}).pipe(first());
   }
 
-  addPost(request: CreatePostRequest){
-    return this.httpClient.post(Routes.Post.ADD,request).pipe(first());
+  addPost(request: CreatePostRequest): Observable<PostResponseObject>{
+    return this.httpClient.post<PostResponseObject>(Routes.Post.ADD,request).pipe(first());
   }
 }

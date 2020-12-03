@@ -17,11 +17,11 @@
     </div>
     <div class="row mt-3">
       <div class="col">
-        <i class="fa fa-plus-square-o fa-2x pointer" (click)="addTag()"></i>
-        <span class="add-text pointer" (click)="addTag()">Add new Tag</span>
+        <i class="fa fa-plus-square-o fa-2x pointer" (click)="emitNewFormControl()"></i>
+        <span class="add-text pointer" (click)="emitNewFormControl()">Add new Tag</span>
       </div>
       <div class="col">
-        <button type="button" class="btn btn-secondary float-right" (click)="add()">Add</button>
+        <ng-content select=".save-button"></ng-content>
       </div>
     </div>
   </div>

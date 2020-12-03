@@ -1,4 +1,4 @@
-import {CreatePostComponent} from './posts/create-post/create-post.component';
+import {CreatePostComponent} from './posts/create/create-post/create-post.component';
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ListPostsComponent} from './posts/list-posts/list-posts.component';

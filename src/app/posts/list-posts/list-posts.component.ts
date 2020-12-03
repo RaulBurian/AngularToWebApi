@@ -5,7 +5,7 @@ import {PostResponseObject} from '../contracts/PostResponseObject';
 import {filter, first, map, takeWhile} from 'rxjs/operators';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
-import {CreatePostModalComponent} from '../create-post-modal/create-post-modal.component';
+import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
 
 interface ICollapsed {
   collapsed: boolean;
@@ -65,11 +65,11 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   private filterCurrentPage = (posts: PostResponseObject[]) => {
-    return posts.filter(post => post.name.includes(this.filterKey));
+    return posts.filter(post => post.name?.includes(this.filterKey));
   };
 
   private filterCurrentPageV2(posts: PostResponseObject[]) {
-    return posts.filter(post => post.name.includes(this.filterKey));
+    return posts.filter(post => post.name?.includes(this.filterKey));
   }
 
   deletePost(postId: string) {

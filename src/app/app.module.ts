@@ -1,10 +1,9 @@
 import { AuthService } from './auth/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CreatePostComponent } from './posts/create-post/create-post.component';
+import { CreatePostComponent } from './posts/create/create-post/create-post.component';
 import { ListPostsComponent } from './posts/list-posts/list-posts.component';
 import { CommonModule } from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -18,7 +17,8 @@ import { ErrorExistsPipe } from './pipes/error-exists.pipe';
 import {StorageService} from './shared/services/storage.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditPostComponent } from './posts/edit-post/edit-post.component';
-import { CreatePostModalComponent } from './posts/create-post-modal/create-post-modal.component';
+import { CreatePostModalComponent } from './posts/create/create-post-modal/create-post-modal.component';
+import { BaseCreateComponent } from './posts/create/base-create/base-create.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +31,7 @@ import { CreatePostModalComponent } from './posts/create-post-modal/create-post-
     ErrorExistsPipe,
     EditPostComponent,
     CreatePostModalComponent,
+    BaseCreateComponent,
   ],
   imports: [
     BrowserModule,
