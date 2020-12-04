@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute) {
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/posts/list']);
+      this.router.navigate(['/home']);
     }
     this.loginForm = new FormGroup({
       email: new FormControl(),
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/posts/list';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
   }
 
   login(): void {

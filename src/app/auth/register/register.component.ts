@@ -12,7 +12,7 @@ import {first} from 'rxjs/operators';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  returnUrl: string = '/posts/list';
+  returnUrl: string = '/home';
 
   constructor(private authService: AuthService,
               private router: Router,

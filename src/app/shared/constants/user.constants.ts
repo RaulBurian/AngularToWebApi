@@ -1,1 +1,2 @@
-export const USERKEY = 'user';
+export const USER_KEY = 'user';
+export const ADMIN_ROLE = 'Admin';

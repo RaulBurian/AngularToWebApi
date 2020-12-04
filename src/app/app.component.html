@@ -1,7 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light mb-50 static">
-  <a class="navbar-brand" href="#">The Post Book</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="home">The Post Book</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -42,16 +41,18 @@
             Manage
           </a>
           <a routerLink="posts/create" class="list-group-item list-group-item-action">
-            Create</a>
+            Create
+          </a>
         </div>
-        <div *ngIf="admin" class="list-header">
+        <hr class="sidebar-separator">
+        <div *ngIf="user$ | async | userIsAdmin" class="list-header">
           Tags section:
         </div>
-        <div *ngIf="admin" class="list-group-flush">
-          <a routerLink="list" class="list-group-item list-group-item-action">
+        <div *ngIf="user$ | async | userIsAdmin" class="list-group-flush">
+          <a routerLink="tags/list" class="list-group-item list-group-item-action">
             Manage
           </a>
-          <a routerLink="create" class="list-group-item list-group-item-action">
+          <a routerLink="tags/create" class="list-group-item list-group-item-action">
             Create</a>
         </div>
       </div>

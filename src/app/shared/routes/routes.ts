@@ -16,4 +16,12 @@ export class Routes {
     static UPDATE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static COUNT: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts/count`;
   };
+
+  static Tags = class {
+    static GETALL: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/tags`;
+    static GETPAGINATED: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/tagsPaginated`;
+    static COUNT: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/tags/count`;
+    static ADD: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/tags`;
+    static DELETE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/tags`;
+  };
 }
