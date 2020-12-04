@@ -37,6 +37,7 @@ export class RegisterComponent implements OnInit {
         },
         error => {
         // console.log(error.error.errors);
+          console.log(error);
         let errors: string='';
           error.error.errors.forEach((err: { message: any; })=> {
             return errors += `${err.message}\n`;

@@ -1,8 +1,8 @@
 import {FormControl} from '@angular/forms';
 import {PostsService} from '../../posts.service';
-import {PostResponseObject} from '../../contracts/PostResponseObject';
+import {PostResponseObject} from '../../contracts/responses/PostResponseObject';
 
-export abstract class AbstractCreateComponent {
+export abstract class AbstractCreateComponentPost {
   controls: FormControl[] = [];
 
   protected constructor(protected postsService: PostsService) {

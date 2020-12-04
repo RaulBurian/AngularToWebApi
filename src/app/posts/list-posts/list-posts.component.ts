@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
 import {combineLatest, Observable, Subscription} from 'rxjs';
-import {PostResponseObject} from '../contracts/PostResponseObject';
+import {PostResponseObject} from '../contracts/responses/PostResponseObject';
 import {combineAll, filter, first, map, takeWhile} from 'rxjs/operators';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
@@ -73,9 +73,9 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   addPostModal() {
     const modalRef = this.modalService.open(CreatePostModalComponent, {size: 'lg'});
-    modalRef.result.then((addedPost) => {
+    modalRef.result.then((addedPost: PostResponseObject) => {
       this.posts$ = this.posts$.pipe(map(posts => {
-        posts.unshift(addedPost.data);
+        posts.unshift(addedPost);
         this.isCollapsed[0].collapsed = true;
         return posts.slice(0, 7);
       }));

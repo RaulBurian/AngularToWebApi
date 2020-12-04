@@ -5,23 +5,29 @@ import {TagsRoutingModule} from './tags-routing.module';
 import {ListTagsComponent} from './list-tags/list-tags.component';
 import {TagsService} from './tags.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PostsModule} from '../posts/posts.module';
-import {NumberNotNullPipe} from '../posts/pipes/number-not-null.pipe';
+import {BaseCreateComponent} from './create/base-create/base-create.component';
+import {CreateTagComponent} from './create/create-tag/create-tag.component';
+import {CreateTagModalComponent} from './create/create-tag-modal/create-tag-modal.component';
 
 
 @NgModule({
   declarations: [
     ListTagsComponent,
+    BaseCreateComponent,
+    CreateTagComponent,
+    CreateTagModalComponent,
   ],
   imports: [
     CommonModule,
     TagsRoutingModule,
     NgbModule,
     FormsModule,
-    PostsModule
+    PostsModule,
+    ReactiveFormsModule
   ],
-  providers:[
+  providers: [
     TagsService
   ]
 })

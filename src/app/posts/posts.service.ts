@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PostResponseObject} from './contracts/PostResponseObject';
+import {PostResponseObject} from './contracts/responses/PostResponseObject';
 import {Routes} from '../shared/routes/routes';
 import {first, map} from 'rxjs/operators';
-import {PostResponse} from './contracts/PostResponse';
-import {CreatePostRequest} from './contracts/CreatePostRequest';
-import {GetCountResponse} from './contracts/GetCountResponse';
+import {PostResponse} from './contracts/responses/PostResponse';
+import {CreatePostRequest} from './contracts/requests/CreatePostRequest';
+import {GetCountResponse} from './contracts/responses/GetCountResponse';
+import {PostCreateResponse} from './contracts/responses/PostCreateResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -36,19 +37,19 @@ export class PostsService {
       .pipe(map(response => response.data));
   }
 
-  deletePost(postId: string){
+  deletePost(postId: string) {
     return this.httpClient.delete(`${Routes.Post.DELETE}/${postId}`).pipe(first());
   }
 
-  updatePost(postId: string,newPostName:string){
-    return this.httpClient.put(`${Routes.Post.UPDATE}/${postId}`,{name:newPostName}).pipe(first());
+  updatePost(postId: string, newPostName: string) {
+    return this.httpClient.put(`${Routes.Post.UPDATE}/${postId}`, {name: newPostName}).pipe(first());
   }
 
-  addPost(request: CreatePostRequest): Observable<PostResponseObject>{
-    return this.httpClient.post<PostResponseObject>(Routes.Post.ADD,request).pipe(first());
+  addPost(request: CreatePostRequest): Observable<PostResponseObject> {
+    return this.httpClient.post<PostCreateResponse>(Routes.Post.ADD, request).pipe(first(), map(response => response.data));
   }
 
-  getPostsCount(): Observable<number>{
-    return this.httpClient.get<GetCountResponse>(Routes.Post.COUNT).pipe(first(),map(response=>response.data));
+  getPostsCount(): Observable<number> {
+    return this.httpClient.get<GetCountResponse>(Routes.Post.COUNT).pipe(first(), map(response => response.data));
   }
 }
