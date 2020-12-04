@@ -16,7 +16,7 @@ export class UnAuthorizedInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
         this.authService.logout();
-        this.authService.sessionError=new SessionError("Session expired!");
+        this.authService.sessionError = new SessionError('Session expired!');
         this.router.navigate(['/login'], {queryParams: {returnUrl: document.location.pathname}});
       }
       return throwError(err);

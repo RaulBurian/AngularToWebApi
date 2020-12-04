@@ -17,15 +17,16 @@ export class CreatePostComponent extends AbstractCreateComponentPost implements 
   ngOnInit(): void {
   }
 
-  // afterAddCleanup(result:PostResponseObject){
+
+  // afterAddCleanup(result: PostResponseObject): void {
   //   console.log(`Function this:${this}`);
   //   console.log(`Arrow Function:${Object.keys(this)}`);
   //   this.controls.forEach(control => control.setValue(''));
   // }
 
-  afterAddCleanup = (result: PostResponseObject): void => {
-    console.log(`Arrow Function:${this}`);
-    console.log(`Arrow Function:${Object.keys(this)}`);
+  afterAddCleanup = (_: PostResponseObject): void => {
+    // console.log(`Arrow Function:${this}`);
+    // console.log(`Arrow Function:${Object.keys(this)}`);
     this.controls.forEach(control => control.setValue(''));
-  };
+  }
 }

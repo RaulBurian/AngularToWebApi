@@ -9,12 +9,12 @@ export abstract class AbstractCreateComponentTag {
   protected constructor(protected tagsService: TagsService) {
   }
 
-  add() {
-    const tagName=this.controls[0].value;
-    this.tagsService.addTags({name:tagName}).subscribe(this.afterAddCleanup);
+  add(): void {
+    const tagName = this.controls[0].value;
+    this.tagsService.addTags({name: tagName}).subscribe(this.afterAddCleanup);
   }
 
-  addFormControl(formControl: FormControl) {
+  addFormControl(formControl: FormControl): void {
     this.controls.push(formControl);
   }
 

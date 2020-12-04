@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {TagResponseObject} from '../contracts/responses/TagResponseObject';
 import {TagsService} from '../tags.service';
-import {filter, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CreateTagModalComponent} from '../create/create-tag-modal/create-tag-modal.component';
 
@@ -27,17 +27,17 @@ export class ListTagsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  filterTags() {
+  filterTags(): void {
     this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name?.includes(this.filterKey))));
   }
 
-  deleteTag(tagName: string) {
+  deleteTag(tagName: string): void {
     this.tagsService.deleteTag(tagName).subscribe(_ => {
       this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name != tagName)));
     });
   }
 
-  addTagModal() {
+  addTagModal(): void {
     const modalRef = this.modal.open(CreateTagModalComponent, {size: 'lg'});
     modalRef.result.then((result: TagResponseObject) => {
       this.tags$ = this.tags$.pipe(map(tags => {
@@ -49,7 +49,7 @@ export class ListTagsComponent implements OnInit {
       });
   }
 
-  changePage(newPageNumber: number) {
+  changePage(newPageNumber: number): void {
     this.tags$ = this.tagsService.getTagsPaginated(newPageNumber, this.pageSize);
     this.filterTags();
   }

@@ -9,7 +9,7 @@ export class UserIsAdminPipe implements PipeTransform {
 
   transform(user: UserModel | null): boolean {
     if (user) {
-      return !!user.roles.find(role => role == ADMIN_ROLE);
+      return !!user.roles.find(role => role === ADMIN_ROLE);
     }
     return false;
   }

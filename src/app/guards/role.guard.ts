@@ -20,9 +20,9 @@ export class RoleGuard implements CanActivate {
     const user: UserModel = JSON.parse(this.storageService.getItem(USER_KEY) || '{}');
     let result: boolean = false;
     if (user.roles) {
-      result = !!user.roles.find(role => role == ADMIN_ROLE);
+      result = !!user.roles.find(role => role === ADMIN_ROLE);
     }
-    if(result){
+    if (result) {
       return result;
     }
     this.router.navigate(['/home']);

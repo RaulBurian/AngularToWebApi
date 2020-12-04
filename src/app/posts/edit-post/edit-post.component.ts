@@ -19,11 +19,11 @@ export class EditPostComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  close() {
+  close(): void {
     this.activeModal.close();
   }
 
-  saveAndClose() {
+  saveAndClose(): void {
     this.postsService.updatePost(this.postId, this.postName)
       .subscribe(_ => this.activeModal
         .close({postId: this.postId, postName: this.postName}));

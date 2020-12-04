@@ -8,19 +8,19 @@ export abstract class AbstractCreateComponentPost {
   protected constructor(protected postsService: PostsService) {
   }
 
-  add() {
+  add(): void {
     const tags: string[] = [];
     const name: string = this.controls[0].value;
     const tagControls = this.controls.slice(1);
     tagControls.forEach(tagControl => {
-      if(tagControl.value){
+      if (tagControl.value) {
         tags.push(tagControl.value);
       }
     });
-    this.postsService.addPost({name, tags}).subscribe(this.afterAddCleanup)
+    this.postsService.addPost({name, tags}).subscribe(this.afterAddCleanup);
   }
 
-  addFormControl(formControl: FormControl) {
+  addFormControl(formControl: FormControl): void {
     this.controls.push(formControl);
   }
 

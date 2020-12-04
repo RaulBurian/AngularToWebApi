@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
 import {PostsService} from '../../posts.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AbstractCreateComponentPost} from '../abstract-create/abstract-create.component-post';
@@ -20,11 +19,11 @@ export class CreatePostModalComponent extends AbstractCreateComponentPost implem
   ngOnInit(): void {
   }
 
-  close() {
+  close(): void {
     this.activeModal.dismiss();
   }
 
   afterAddCleanup = (result: PostResponseObject): void => {
     this.activeModal.close(result);
-  };
+  }
 }

@@ -19,6 +19,6 @@ export class CreateTagComponent extends AbstractCreateComponentTag implements On
 
   afterAddCleanup = (result: TagResponseObject): void => {
     this.controls.forEach(control => control.setValue(''));
-  };
+  }
 
 }

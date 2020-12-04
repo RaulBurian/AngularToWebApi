@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {AuthenticationRequest} from './contracts/requests/AuthenticationRequest';
 import {AuthenticationResponse} from './contracts/responses/AuthenticationResponse';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -75,8 +75,8 @@ export class AuthService {
     return this.errorObservable;
   }
 
-  private storeUser(request: AuthenticationRequest, response: AuthenticationResponse) {
-    let userToStore: UserModel = {
+  private storeUser(request: AuthenticationRequest, response: AuthenticationResponse): void {
+    const userToStore: UserModel = {
       email: request.email,
       token: response.token,
       roles: response.roles

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {PostsService} from '../../posts.service';
 
 @Component({
   selector: 'app-base-create-post',
@@ -12,7 +11,7 @@ export class BaseCreateComponent implements OnInit {
   tags: boolean[] = [];
   tagsNumber: number = 0;
   addForm: FormGroup;
-  private nameFormControl=new FormControl();
+  private nameFormControl = new FormControl();
 
   @Output()
   newFormControl: EventEmitter<FormControl> = new EventEmitter<FormControl>();
@@ -27,7 +26,7 @@ export class BaseCreateComponent implements OnInit {
     this.newFormControl.emit(this.nameFormControl);
   }
 
-  emitNewFormControl() {
+  emitNewFormControl(): void {
     this.tagsNumber++;
     this.tags.push(true);
     const newFormControl: FormControl = new FormControl();

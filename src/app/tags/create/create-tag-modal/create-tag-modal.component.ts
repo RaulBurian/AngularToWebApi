@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
 import {TagsService} from '../../tags.service';
 import {AbstractCreateComponentTag} from '../abstract-create/abstract-create-component-tag';
 import {TagResponseObject} from '../../contracts/responses/TagResponseObject';
@@ -19,11 +18,11 @@ export class CreateTagModalComponent extends AbstractCreateComponentTag implemen
   ngOnInit(): void {
   }
 
-  close() {
+  close(): void {
     this.activeModal.dismiss();
   }
 
   afterAddCleanup = (result: TagResponseObject): void => {
     this.activeModal.close(result);
-  };
+  }
 }

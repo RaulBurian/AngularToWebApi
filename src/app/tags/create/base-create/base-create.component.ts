@@ -8,13 +8,13 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 export class BaseCreateComponent implements OnInit {
   addForm: FormGroup;
-  private nameFormControl=new FormControl();
+  private nameFormControl = new FormControl();
 
   @Output()
-  newFormControl: EventEmitter<FormControl>=new EventEmitter<FormControl>();
+  newFormControl: EventEmitter<FormControl> = new EventEmitter<FormControl>();
 
   constructor() {
-    this.addForm=new FormGroup({
+    this.addForm = new FormGroup({
       name: this.nameFormControl
     });
   }

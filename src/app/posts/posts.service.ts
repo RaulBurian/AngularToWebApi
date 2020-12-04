@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PostResponseObject} from './contracts/responses/PostResponseObject';
 import {Routes} from '../shared/routes/routes';
@@ -13,7 +13,6 @@ import {PostCreateResponse} from './contracts/responses/PostCreateResponse';
   providedIn: 'root'
 })
 export class PostsService {
-
 
   constructor(private httpClient: HttpClient) {
 
@@ -37,12 +36,12 @@ export class PostsService {
       .pipe(map(response => response.data));
   }
 
-  deletePost(postId: string) {
-    return this.httpClient.delete(`${Routes.Post.DELETE}/${postId}`).pipe(first());
+  deletePost(postId: string): Observable<null> {
+    return this.httpClient.delete<null>(`${Routes.Post.DELETE}/${postId}`).pipe(first());
   }
 
-  updatePost(postId: string, newPostName: string) {
-    return this.httpClient.put(`${Routes.Post.UPDATE}/${postId}`, {name: newPostName}).pipe(first());
+  updatePost(postId: string, newPostName: string): Observable<null> {
+    return this.httpClient.put<null>(`${Routes.Post.UPDATE}/${postId}`, {name: newPostName}).pipe(first());
   }
 
   addPost(request: CreatePostRequest): Observable<PostResponseObject> {

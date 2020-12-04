@@ -36,8 +36,8 @@ export class TagsService {
       .pipe(first(), map(response => response.data));
   }
 
-  deleteTag(tagName: string) {
-    return this.httpclient.delete(`${Routes.Tags.DELETE}/${tagName}`).pipe(first());
+  deleteTag(tagName: string): Observable<null> {
+    return this.httpclient.delete<null>(`${Routes.Tags.DELETE}/${tagName}`).pipe(first());
   }
 
   addTags(tagRequest: AddTagRequest): Observable<TagResponseObject> {

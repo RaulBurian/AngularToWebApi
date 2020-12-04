@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {UserModel} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +11,11 @@ export class StorageService {
     this.storage = localStorage;
   }
 
-  storeItem(key: string, item: string) {
+  storeItem(key: string, item: string): void {
     localStorage.setItem(key, item);
   }
 
-  removeKey(key: string) {
+  removeKey(key: string): void {
     localStorage.removeItem(key);
   }
 

@@ -27,11 +27,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/home';
   }
 
   login(): void {
-    this.authService.sessionError=null;
+    this.authService.sessionError = null;
     this.authService.authenticate(this.loginForm.value)
       .pipe(first())
       .subscribe(success => {
