@@ -1,0 +1,69 @@
+<div class="row ">
+  <div class="col-10 content-section">
+    <div class="text-center big">
+      Here you can practice reactive forms!
+    </div>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" formControlName="username"
+               [class.is-invalid]="getUsername()?.invalid && getUsername()?.touched">
+        <div class="invalid-feedback">
+          <span *ngIf="getUsername()?.errors?.required">Username is required</span>
+          <span *ngIf="getUsername()?.errors?.minlength">Username must be at least 3 characters long</span>
+          <span *ngIf="getUsername()?.errors?.forbiddenName">
+            Username is not allowed {{getUsername()?.errors?.forbiddenName.value}}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <button type="button" class="btn btn-secondary btn-sm m-2" (click)="addAlternateEmail()">Add email</button>
+        <input type="text" formControlName="email" class="form-control" id="email"
+               [class.is-invalid]="getEmail()?.invalid && getEmail()?.touched">
+        <div class="invalid-feedback">Email is required</div>
+        <div *ngFor="let email of getAlternateEmails().controls;index as i" formArrayName="alternateEmails">
+          <input type="text" class="form-control my-3" formControlName="{{i}}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" formControlName="password">
+      </div>
+
+      <div class="form-group">
+        <label for="password2">Confirm password</label>
+        <input type="password" class="form-control" id="password2" formControlName="confirmPassword"
+               [class.is-invalid]="registrationForm.errors?.noMatch">
+        <div *ngIf="registrationForm.errors?.noMatch" class="invalid-feedback">Passwords do not match</div>
+      </div>
+
+      <div formGroupName="address">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" class="form-control" formControlName="city">
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" class="form-control" formControlName="state">
+        </div>
+
+        <div class="form-group">
+          <label for="postcode">Postal Code</label>
+          <input type="text" id="postcode" class="form-control" formControlName="postalCode">
+        </div>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" formControlName="offers" type="checkbox" id="offers">
+        <label for="offers" class="form-check-label">Send me promotional offers</label>
+      </div>
+
+      <button class="btn btn-secondary float-right" type="submit">Register</button>
+      <button class="btn btn-secondary float-left mr-3" type="button" (click)="populate()">Populate fields</button>
+    </form>
+    {{registrationForm.value | json}}
+  </div>
+</div>

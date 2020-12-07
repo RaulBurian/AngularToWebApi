@@ -11,8 +11,9 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'practice', loadChildren: () => import('./practice/practice.module').then(m => m.PracticeModule), canActivate: [AuthGuard]},
   {path: 'posts', loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule), canActivate: [AuthGuard]},
-  {path: 'tags', loadChildren: () => import('./tags/tags.module').then(m => m.TagsModule), canActivate: [AuthGuard, RoleGuard]}
+  {path: 'tags', loadChildren: () => import('./tags/tags.module').then(m => m.TagsModule), canActivate: [AuthGuard, RoleGuard]},
 ];
 
 @NgModule({
