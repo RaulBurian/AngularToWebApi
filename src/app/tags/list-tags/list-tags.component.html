@@ -1,7 +1,7 @@
-<input id="search" type="text" class="form-control" placeholder="Search tags" (keyup)="filterTags()"
+<input id="search" type="text" class="form-control" placeholder="Search tags"
        [(ngModel)]="filterKey">
 <ul class="list-group mt-3">
-  <li *ngFor="let tag of tags$ | async;index as i" class="list-group-item">
+  <li *ngFor="let tag of tags$ | async | filterTag: filterKey;index as i" class="list-group-item">
     <span class="main-item">{{tag.name}}</span>
     <i class="fa fa-trash-o mar-left pointer" aria-hidden="true" (click)="deleteTag(tag.name)"></i>
   </li>

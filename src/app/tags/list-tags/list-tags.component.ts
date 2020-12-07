@@ -51,6 +51,6 @@ export class ListTagsComponent implements OnInit {
 
   changePage(newPageNumber: number): void {
     this.tags$ = this.tagsService.getTagsPaginated(newPageNumber, this.pageSize);
-    this.filterTags();
+    // this.filterTags();
   }
 }
