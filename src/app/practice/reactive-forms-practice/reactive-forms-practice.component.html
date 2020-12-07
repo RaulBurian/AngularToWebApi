@@ -61,7 +61,7 @@
         <label for="offers" class="form-check-label">Send me promotional offers</label>
       </div>
 
-      <button class="btn btn-secondary float-right" type="submit">Register</button>
+      <button class="btn btn-secondary float-right" type="submit" [disabled]="!registrationForm.valid">Register</button>
       <button class="btn btn-secondary float-left mr-3" type="button" (click)="populate()">Populate fields</button>
     </form>
     {{registrationForm.value | json}}
