@@ -10,6 +10,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NumberNotNullPipe} from './pipes/number-not-null.pipe';
 import {BaseCreateComponent} from './create/base-create/base-create.component';
 import {PostsService} from './posts.service';
+import { SearchPostsComponent } from './search-posts/search-posts.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {PostsService} from './posts.service';
     EditPostComponent,
     ListPostsComponent,
     NumberNotNullPipe,
-    BaseCreateComponent
+    BaseCreateComponent,
+    SearchPostsComponent
   ],
   imports: [
     CommonModule,

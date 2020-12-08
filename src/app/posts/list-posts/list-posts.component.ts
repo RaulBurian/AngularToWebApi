@@ -6,10 +6,7 @@ import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
-
-interface ICollapsed {
-  collapsed: boolean;
-}
+import {ICollapsed} from '../../shared/models/ICollapsed';
 
 @Component({
   selector: 'app-list-posts',
