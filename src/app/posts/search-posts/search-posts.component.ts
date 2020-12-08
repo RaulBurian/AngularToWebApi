@@ -11,7 +11,7 @@ import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './search-posts.component.html',
   styleUrls: ['./search-posts.component.css']
 })
-export class SearchPostsComponent implements OnInit, AfterViewInit {
+export class SearchPostsComponent implements OnInit {
   posts$: Observable<PostResponseObject[]> = of([]);
   isCollapsed: ICollapsed[] = [];
   suggestions$: Observable<PostResponseObject[]> = of([]);
@@ -21,17 +21,12 @@ export class SearchPostsComponent implements OnInit, AfterViewInit {
   @ViewChild('myDrop')
   dropDownRef: NgbDropdown;
 
-  constructor(private postsService: PostsService,
-              private cdRef: ChangeDetectorRef) {
+  constructor(private postsService: PostsService) {
     this.searchKey = '';
     this.searchSubject = new BehaviorSubject<string>(this.searchKey);
   }
 
   ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
     this.suggestions$ = this.searchSubject.pipe(debounceTime(500),
       distinctUntilChanged(),
       switchMap(searchTerm => {
@@ -43,7 +38,6 @@ export class SearchPostsComponent implements OnInit, AfterViewInit {
         console.log(error);
         return of([]);
       }));
-    this.cdRef.detectChanges();
   }
 
   toggleCollapse(index: number): void {
