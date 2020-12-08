@@ -1,11 +1,14 @@
 <div class="row mb-0">
   <div class="col-10">
-    <input id="search" type="text" class="form-control d-inline-block" placeholder="Search posts" (keyup)="changeValue()"
-    [(ngModel)]="searchKey" autocomplete="off">
+    <input id="search" type="text" class="form-control d-inline-block" placeholder="Search posts"
+           (keyup)="changeValue()"
+           [(ngModel)]="searchKey" autocomplete="off">
     <div class="d-inline-block top-0" ngbDropdown #myDrop="ngbDropdown">
-      <div ngbDropdownMenu class="w-100">
-        <button *ngFor="let post of suggestions$| async;index as i" (click)="searchPosts(post.name);myDrop.close()"
-                ngbDropdownItem>{{post.name}}</button>
+      <div ngbDropdownAnchor class="d-none">
+        <div ngbDropdownMenu class="w-100">
+          <button *ngFor="let post of suggestions$| async;index as i" (click)="searchPosts(post.name);myDrop.close()"
+                  ngbDropdownItem>{{post.name}}</button>
+        </div>
       </div>
     </div>
   </div>

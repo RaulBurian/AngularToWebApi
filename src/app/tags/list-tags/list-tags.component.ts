@@ -33,7 +33,8 @@ export class ListTagsComponent implements OnInit {
 
   deleteTag(tagName: string): void {
     this.tagsService.deleteTag(tagName).subscribe(_ => {
-      this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name != tagName)));
+      this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name !== tagName)));
+      this.tagsCount$ = this.tagsCount$.pipe(map(count => count--));
     });
   }
 
@@ -44,6 +45,7 @@ export class ListTagsComponent implements OnInit {
         tags.unshift(result);
         return tags.slice(0, 7);
       }));
+      this.tagsCount$ = this.tagsCount$.pipe(map(count => count++));
     })
       .catch(_ => {
       });

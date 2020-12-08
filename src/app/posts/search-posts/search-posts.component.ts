@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {PostResponseObject} from '../contracts/responses/PostResponseObject';
 import {ICollapsed} from '../../shared/models/ICollapsed';
@@ -11,7 +11,7 @@ import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './search-posts.component.html',
   styleUrls: ['./search-posts.component.css']
 })
-export class SearchPostsComponent implements OnInit, AfterViewInit, AfterContentInit {
+export class SearchPostsComponent implements OnInit, AfterViewInit {
   posts$: Observable<PostResponseObject[]> = of([]);
   isCollapsed: ICollapsed[] = [];
   suggestions$: Observable<PostResponseObject[]> = of([]);
@@ -19,7 +19,7 @@ export class SearchPostsComponent implements OnInit, AfterViewInit, AfterContent
   searchKey: string;
 
   @ViewChild('myDrop')
-  dropDownRef: NgbDropdown | undefined;
+  dropDownRef: NgbDropdown;
 
   constructor(private postsService: PostsService,
               private cdRef: ChangeDetectorRef) {
@@ -63,9 +63,5 @@ export class SearchPostsComponent implements OnInit, AfterViewInit, AfterContent
       this.dropDownRef?.close();
     }
     this.searchSubject.next(this.searchKey);
-  }
-
-  ngAfterContentInit(): void {
-
   }
 }
