@@ -6,10 +6,7 @@ import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
-
-interface ICollapsed {
-  collapsed: boolean;
-}
+import {ICollapsed} from '../../shared/models/ICollapsed';
 
 @Component({
   selector: 'app-list-posts',
@@ -52,6 +49,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   deletePost(postId: string): void {
     this.postsService.deletePost(postId).subscribe(_ => {
       this.posts$ = this.posts$.pipe(map(posts => posts.filter(post => post.id !== postId)));
+      this.postsNumber$ = this.postsNumber$.pipe(map(nr => nr--));
     });
   }
 
@@ -76,6 +74,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
         this.isCollapsed[0].collapsed = true;
         return posts.slice(0, 7);
       }));
+      this.postsNumber$ = this.postsNumber$.pipe(map(nr => nr++));
     }).catch(_ => {
     });
   }

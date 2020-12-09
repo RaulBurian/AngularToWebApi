@@ -1,0 +1,34 @@
+<div class="row mb-0">
+  <div class="col-10">
+    <input id="search" type="text" class="form-control d-inline-block" placeholder="Search posts"
+           (keyup)="changeValue()"
+           [(ngModel)]="searchKey" autocomplete="off">
+    <div class="d-inline-block top-0" ngbDropdown #myDrop="ngbDropdown">
+      <div ngbDropdownAnchor class="d-none">
+        <div ngbDropdownMenu class="w-100">
+          <button *ngFor="let post of suggestions$| async;index as i" (click)="searchPosts(post.name);myDrop.close()"
+                  ngbDropdownItem>{{post.name}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-2">
+    <button type="button" class="btn btn-secondary" (click)="searchPosts(searchKey);">Search</button>
+  </div>
+</div>
+
+<ul class="list-group mt-3">
+  <li *ngFor="let post of posts$ | async;index as i" class="list-group-item">
+    <span (click)="toggleCollapse(i)" class="main-item pointer">{{post.name}}</span>
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed[i].collapsed">
+      <div class="collapse-item">
+        <span class="collapse-span">Tags:</span>
+        <span *ngFor="let tag of post.tags" class="collapse-span">
+          &#35;{{tag}}
+        </span>
+      </div>
+    </div>
+  </li>
+</ul>
+
+

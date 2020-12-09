@@ -15,6 +15,7 @@ export class Routes {
     static DELETE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static UPDATE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static COUNT: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts/count`;
+    static RECOMMENDED: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts/search`;
   };
 
   static Tags = class {

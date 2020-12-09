@@ -43,6 +43,9 @@
           <a routerLink="posts/create" class="list-group-item list-group-item-action">
             Create
           </a>
+          <a routerLink="posts/search" class="list-group-item list-group-item-action">
+            Search
+          </a>
         </div>
         <hr class="sidebar-separator">
         <div *ngIf="user$ | async | userIsAdmin" class="list-header">

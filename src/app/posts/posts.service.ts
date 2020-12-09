@@ -51,4 +51,13 @@ export class PostsService {
   getPostsCount(): Observable<number> {
     return this.httpClient.get<GetCountResponse>(Routes.Post.COUNT).pipe(first(), map(response => response.data));
   }
+
+  getRecommended(key: string, numberOfRec: number = 10): Observable<PostResponseObject[]> {
+    return this.httpClient.get<PostResponse>(Routes.Post.RECOMMENDED, {
+      params: {
+        searchTerm: key || '',
+        numberOfRec: numberOfRec.toString()
+      }
+    }).pipe(map(response => response.data));
+  }
 }
