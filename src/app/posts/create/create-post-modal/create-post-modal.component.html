@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Create your post!</h4>
+  <button type="button" class="close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <app-base-create-post (newFormControl)="addFormControl($event)"></app-base-create-post>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="add()">Save</button>
+</div>
