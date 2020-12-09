@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.authService.sessionError=null;
     this.authService.authenticate(this.loginForm.value)
       .pipe(first())
       .subscribe(success => {
