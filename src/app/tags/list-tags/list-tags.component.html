@@ -1,23 +1,11 @@
-<input id="search" type="text" class="form-control" placeholder="Search tags" (keyup)="filterTags()"
-       [(ngModel)]="filterKey">
-<ul class="list-group mt-3">
-  <li *ngFor="let tag of tags$ | async;index as i" class="list-group-item">
-    <span class="main-item">{{tag.name}}</span>
-    <i class="fa fa-trash-o mar-left pointer" aria-hidden="true" (click)="deleteTag(tag.name)"></i>
-  </li>
-</ul>
-<div class="row">
-  <div class="col mt-3 pointer" (click)="addTagModal()">
-    <div class="bdr">
-      <i class="fa fa-plus-circle fa-2x add-tag-icon"></i>
-      <span class="add-post-text large-only">Add tag</span>
-    </div>
-  </div>
-  <div class="col">
-    <ngb-pagination class="d-flex justify-content-end mt-3 big" [collectionSize]="tagsCount$ | async | numberNotNull"
-                    [(page)]="pageNumber"
-                    [maxSize]="3" (pageChange)="changePage($event)" [pageSize]="pageSize">
-    </ngb-pagination>
-  </div>
-</div>
-
+<app-generic-list (pageChangeEvent)="changePage($event)"
+                  [data]="tags$|async|toGenericData"
+                  [numberOfElements]="tagsCount$|async"
+                  [pageSize]="pageSize"
+                  [displayKey]="'name'"
+                  [filterable]="true"
+                  [filterFunction]="filterTag"
+                  [deletable]="true"
+                  [deleteFunction]="delete"
+                  [addable]="true"
+                  [addFunction]="addTagModal"></app-generic-list>

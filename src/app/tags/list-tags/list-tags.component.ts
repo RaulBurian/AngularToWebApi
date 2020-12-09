@@ -16,7 +16,6 @@ export class ListTagsComponent implements OnInit {
   tags$: Observable<TagResponseObject[]>;
   tagsCount$: Observable<number>;
   pageNumber: number = 1;
-  filterKey: string = '';
   pageSize: number = 7;
 
   constructor(private tagsService: TagsService, private modal: NgbModal) {
@@ -27,17 +26,13 @@ export class ListTagsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  filterTags(): void {
-    this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name?.includes(this.filterKey))));
-  }
-
-  deleteTag(tagName: string): void {
-    this.tagsService.deleteTag(tagName).subscribe(_ => {
-      this.tags$ = this.tags$.pipe(map(tags => tags.filter(tag => tag.name != tagName)));
+  delete = (tag: TagResponseObject): void => {
+    this.tagsService.deleteTag(tag.name).subscribe(_ => {
+      this.tags$ = this.tags$.pipe(map(tags => tags.filter(tg => tg.name !== tag.name)));
     });
   }
 
-  addTagModal(): void {
+  addTagModal = (): void => {
     const modalRef = this.modal.open(CreateTagModalComponent, {size: 'lg'});
     modalRef.result.then((result: TagResponseObject) => {
       this.tags$ = this.tags$.pipe(map(tags => {
@@ -51,6 +46,9 @@ export class ListTagsComponent implements OnInit {
 
   changePage(newPageNumber: number): void {
     this.tags$ = this.tagsService.getTagsPaginated(newPageNumber, this.pageSize);
-    this.filterTags();
+  }
+
+  filterTag(tag: TagResponseObject, key: string): boolean {
+    return tag.name.includes(key);
   }
 }

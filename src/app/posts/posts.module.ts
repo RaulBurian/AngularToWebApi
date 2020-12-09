@@ -10,6 +10,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NumberNotNullPipe} from './pipes/number-not-null.pipe';
 import {BaseCreateComponent} from './create/base-create/base-create.component';
 import {PostsService} from './posts.service';
+import {SharedModule} from '../shared/shared.module';
+import { ToListItemPipe } from './pipes/to-list-item.pipe';
+import { DetailPostComponent } from './detail-post/detail-post.component';
+import { StringToGenericDataPipe } from './pipes/string-to-generic-data.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,10 @@ import {PostsService} from './posts.service';
     EditPostComponent,
     ListPostsComponent,
     NumberNotNullPipe,
-    BaseCreateComponent
+    BaseCreateComponent,
+    ToListItemPipe,
+    DetailPostComponent,
+    StringToGenericDataPipe
   ],
   imports: [
     CommonModule,
@@ -26,6 +33,7 @@ import {PostsService} from './posts.service';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    SharedModule,
   ],
   exports: [
     NumberNotNullPipe

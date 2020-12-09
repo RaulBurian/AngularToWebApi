@@ -11,6 +11,7 @@ export class Routes {
   static Post = class {
     static GETALL: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static GETPAGINATED: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/postsPaginated`;
+    static GET: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static ADD: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static DELETE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;
     static UPDATE: string = `${Routes.BASEURL}/${Routes.PREFIX}/${Routes.VERSION}/posts`;

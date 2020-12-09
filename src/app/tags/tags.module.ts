@@ -10,6 +10,8 @@ import {PostsModule} from '../posts/posts.module';
 import {BaseCreateComponent} from './create/base-create/base-create.component';
 import {CreateTagComponent} from './create/create-tag/create-tag.component';
 import {CreateTagModalComponent} from './create/create-tag-modal/create-tag-modal.component';
+import { ToGenericDataPipe } from './pipes/to-generic-data.pipe';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -18,6 +20,7 @@ import {CreateTagModalComponent} from './create/create-tag-modal/create-tag-moda
     BaseCreateComponent,
     CreateTagComponent,
     CreateTagModalComponent,
+    ToGenericDataPipe,
   ],
   imports: [
     CommonModule,
@@ -25,7 +28,8 @@ import {CreateTagModalComponent} from './create/create-tag-modal/create-tag-moda
     NgbModule,
     FormsModule,
     PostsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     TagsService
