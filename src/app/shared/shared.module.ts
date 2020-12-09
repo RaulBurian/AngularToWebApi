@@ -3,11 +3,13 @@ import {CommonModule} from '@angular/common';
 import {GenericListComponent} from './generic-list/generic-list.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
+import { GenericListV2Component } from './generic-list-v2/generic-list-v2.component';
 
 
 @NgModule({
   declarations: [
-    GenericListComponent
+    GenericListComponent,
+    GenericListV2Component
   ],
   imports: [
     CommonModule,
@@ -15,7 +17,8 @@ import {FormsModule} from '@angular/forms';
     FormsModule,
   ],
   exports: [
-    GenericListComponent
+    GenericListComponent,
+    GenericListV2Component
   ]
 })
 export class SharedModule {

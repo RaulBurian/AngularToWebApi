@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 interface ICollapsed {
   collapsed: boolean;
@@ -48,7 +48,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     return post.name.includes(key);
   }
 
-  edit = (post: PostResponseObject): void => {
+  edit(post: PostResponseObject): void {
     const modalRef: NgbModalRef = this.modalService.open(EditPostComponent);
     modalRef.componentInstance.postName = post.name;
     modalRef.componentInstance.postId = post.id;
@@ -61,13 +61,13 @@ export class ListPostsComponent implements OnInit, OnDestroy {
       });
   }
 
-  delete = (post: PostResponseObject): void => {
+  delete(post: PostResponseObject): void {
     this.postsService.deletePost(post.id).subscribe(_ => {
       this.posts$ = this.posts$.pipe(map(posts => posts.filter(pst => pst.id !== post.id)));
     });
   }
 
-  addPostModal = (): void => {
+  addPostModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(CreatePostModalComponent, {size: 'lg'});
     modalRef.result.then((addedPost: PostResponseObject) => {
       this.posts$ = this.posts$.pipe(map(posts => {
@@ -80,7 +80,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     });
   }
 
-  click = (post: PostResponseObject): void => {
+  click(post: PostResponseObject): void {
     this.router.navigate(['/posts/detail', post.id]);
   }
 

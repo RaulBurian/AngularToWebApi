@@ -1,0 +1,28 @@
+<input *ngIf="filterable" id="search" type="text" class="form-control" placeholder="Search posts"
+       (keyup)="filterPosts()"
+       [(ngModel)]="searchKey">
+<ul class="list-group mt-3">
+  <li *ngFor="let it of displayData$ | async;index as i" class="list-group-item">
+    <span *ngIf="displayKey" (click)="itemClicked(it.item)" class="main-item pointer">{{it.item[displayKey]}}</span>
+    <span *ngIf="!displayKey" (click)="itemClicked(it.item)" class="main-item pointer">{{it.item}}</span>
+    <i *ngIf="deletable && it.modifiable" class="fa fa-trash-o mar-left pointer" (click)="deleteItem(it.item)"></i>
+    <i *ngIf="editable && it.modifiable" class="fa fa-pencil-square-o mar-left pointer"
+       (click)="editItem(it.item)"></i>
+  </li>
+</ul>
+<div class="row">
+  <div *ngIf="addable" class="col mt-3 pointer" (click)="addItem()">
+    <div class="bdr">
+      <i class="fa fa-plus-circle fa-2x add-post-icon"></i>
+      <span class="add-post-text large-only">Add</span>
+    </div>
+  </div>
+  <div class="col">
+    <ngb-pagination *ngIf="numberOfElements/pageSize>1" class="d-flex justify-content-end mt-3 big"
+                    [collectionSize]="numberOfElements"
+                    [(page)]="pageNumber"
+                    [maxSize]="3" (pageChange)="changePage($event)" [pageSize]="pageSize">
+    </ngb-pagination>
+  </div>
+</div>
+
