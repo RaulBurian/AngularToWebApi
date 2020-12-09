@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {AuthenticationRequest} from './contracts/requests/AuthenticationRequest';
 import {AuthenticationResponse} from './contracts/responses/AuthenticationResponse';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -10,8 +10,9 @@ import {RegistrationResponse} from './contracts/responses/RegistrationResponse';
 import {LoginRequest} from './contracts/requests/LoginRequest';
 import {LoginResponse} from './contracts/responses/LoginResponse';
 import {Routes} from '../shared/routes/routes';
-import {UserStorageService} from '../shared/services/user-storage.service';
+import {StorageService} from '../shared/services/storage.service';
 import {SessionError} from '../shared/errors/session-error';
+import {USER_KEY} from '../shared/constants/user.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class AuthService {
   private errorSubject: BehaviorSubject<SessionError | null>;
   private readonly errorObservable: Observable<SessionError | null>;
 
-  constructor(private httpClient: HttpClient, private storage: UserStorageService) {
-    const storedUser: string | null = this.storage.getUser();
+  constructor(private httpClient: HttpClient, private storage: StorageService) {
+    const storedUser: string | null = this.storage.getItem(USER_KEY);
     let storedUserJson: UserModel | null;
     if (storedUser) {
       storedUserJson = JSON.parse(storedUser);
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.storage.removeUser();
+    this.storage.removeKey(USER_KEY);
     this.currentUserSubject.next(null);
   }
 
@@ -66,7 +67,7 @@ export class AuthService {
     return this.currentUserObservable;
   }
 
-  set sessionError(error: SessionError | null){
+  set sessionError(error: SessionError | null) {
     this.errorSubject.next(error);
   }
 
@@ -74,12 +75,13 @@ export class AuthService {
     return this.errorObservable;
   }
 
-  private storeUser(request: AuthenticationRequest, response: AuthenticationResponse) {
-    let userToStore: UserModel = {
+  private storeUser(request: AuthenticationRequest, response: AuthenticationResponse): void {
+    const userToStore: UserModel = {
       email: request.email,
-      token: response.token
+      token: response.token,
+      roles: response.roles
     };
-    this.storage.storeUser(userToStore);
+    this.storage.storeItem(USER_KEY, JSON.stringify(userToStore));
     this.currentUserSubject.next(userToStore);
   }
 

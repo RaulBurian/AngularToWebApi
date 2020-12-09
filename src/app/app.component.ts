@@ -12,8 +12,7 @@ import {SessionError} from './shared/errors/session-error';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  title = 'unghiular';
-  admin = false;
+  title: string = 'unghiular';
   user$: Observable<UserModel | null>;
   sessionError$: Observable<SessionError | null>;
 
@@ -29,13 +28,13 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  logout() {
+  logout(): void {
     this.clearSessionError();
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  clearSessionError() {
+  clearSessionError(): void {
     this.authService.sessionError = null;
   }
 }
