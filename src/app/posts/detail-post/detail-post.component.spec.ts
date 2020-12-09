@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DetailPostComponent } from './detail-post.component';
+import {DetailPostComponent} from './detail-post.component';
+import {HttpClientModule} from '@angular/common/http';
+import {RouterTestingModule} from '@angular/router/testing';
+import {SharedModule} from '../../shared/shared.module';
 
 describe('DetailPostComponent', () => {
   let component: DetailPostComponent;
@@ -8,9 +11,16 @@ describe('DetailPostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DetailPostComponent ]
+      declarations: [
+        DetailPostComponent
+      ],
+      imports: [
+        HttpClientModule,
+        RouterTestingModule,
+        SharedModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

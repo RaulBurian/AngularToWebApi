@@ -1,6 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListPostsComponent } from './list-posts.component';
+import {ListPostsComponent} from './list-posts.component';
+import {HttpClientModule} from '@angular/common/http';
+import {Router, RouterModule} from '@angular/router';
+import {PostsRoutingModule} from '../posts-routing.module';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ToListItemPipe} from '../pipes/to-list-item.pipe';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('ListPostsComponent', () => {
   let component: ListPostsComponent;
@@ -8,9 +14,18 @@ describe('ListPostsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListPostsComponent ]
+      declarations: [
+        ListPostsComponent,
+        ToListItemPipe
+      ],
+      imports: [
+        HttpClientModule,
+        RouterTestingModule,
+        FormsModule,
+        ReactiveFormsModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListTagsComponent } from './list-tags.component';
+import {ListTagsComponent} from './list-tags.component';
+import {HttpClientModule} from '@angular/common/http';
+import {ToGenericDataPipe} from '../pipes/to-generic-data.pipe';
 
 describe('ListTagsComponent', () => {
   let component: ListTagsComponent;
@@ -8,9 +10,15 @@ describe('ListTagsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListTagsComponent ]
+      declarations: [
+        ListTagsComponent,
+        ToGenericDataPipe
+      ],
+      imports: [
+        HttpClientModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

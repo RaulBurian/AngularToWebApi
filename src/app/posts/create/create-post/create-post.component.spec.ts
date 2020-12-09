@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreatePostComponent } from './create-post.component';
+import {CreatePostComponent} from './create-post.component';
+import {HttpClientModule} from '@angular/common/http';
+import {BaseCreateComponent} from '../base-create/base-create.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('CreatePostComponent', () => {
   let component: CreatePostComponent;
@@ -8,9 +11,17 @@ describe('CreatePostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreatePostComponent ]
+      declarations: [
+        BaseCreateComponent,
+        CreatePostComponent
+      ],
+      imports: [
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreateTagModalComponent } from './create-tag-modal.component';
+import {CreateTagModalComponent} from './create-tag-modal.component';
+import {HttpClientModule} from '@angular/common/http';
+import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {BaseCreateComponent} from '../base-create/base-create.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SharedModule} from '../../../shared/shared.module';
 
 describe('CreateTagModalComponent', () => {
   let component: CreateTagModalComponent;
@@ -8,9 +13,22 @@ describe('CreateTagModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateTagModalComponent ]
+      declarations: [
+        CreateTagModalComponent,
+        BaseCreateComponent
+      ],
+      imports: [
+        HttpClientModule,
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule
+      ],
+      providers: [
+        NgbActiveModal
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
