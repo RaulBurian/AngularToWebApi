@@ -83,7 +83,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   changePage(newPageNumber: number): void {
     this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize);
     this.postsNextPage$ = this.postsService.getPostsPaginated(newPageNumber + 1, this.pageSize);
-    this.filterPosts();
+    // this.filterPosts();
   }
 
   toggleCollapse(index: number): void {
