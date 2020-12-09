@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {PostResponseObject} from '../contracts/responses/PostResponseObject';
 import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 interface ICollapsed {
   collapsed: boolean;
@@ -20,17 +21,15 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   pageNumber: number = 1;
   pageSize: number = 7;
-  filterKey: string = '';
   posts$: Observable<PostResponseObject[]>;
-  postsNextPage$: Observable<PostResponseObject[]>;
   postsNumber$: Observable<number>;
   isCollapsed: ICollapsed[] = [];
 
   constructor(private postsService: PostsService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private router: Router) {
     this.postsNumber$ = this.postsService.getPostsCount();
     this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
-    this.postsNextPage$ = this.postsService.getPostsPaginated(this.pageNumber + 1, this.pageSize);
     Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
 
@@ -41,37 +40,38 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  filterPosts(): void {
-    this.posts$ = combineLatest([this.posts$, this.postsNextPage$]).pipe(map(values => {
-      const [current, next] = values;
-      const all: PostResponseObject[] = current.concat(next);
-      return all.filter(post => post.name?.includes(this.filterKey)).slice(0, 7);
-    }));
+  changePage(newPageNumber: number): void {
+    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize);
   }
 
-  deletePost(postId: string): void {
-    this.postsService.deletePost(postId).subscribe(_ => {
-      this.posts$ = this.posts$.pipe(map(posts => posts.filter(post => post.id !== postId)));
-    });
+  filterPost(post: PostResponseObject, key: string): boolean {
+    return post.name.includes(key);
   }
 
-  editPost(postId: string, postName: string): void {
+  edit = (post: PostResponseObject): void => {
     const modalRef: NgbModalRef = this.modalService.open(EditPostComponent);
-    modalRef.componentInstance.postName = postName;
-    modalRef.componentInstance.postId = postId;
+    modalRef.componentInstance.postName = post.name;
+    modalRef.componentInstance.postId = post.id;
     modalRef.result.then(result => {
       this.posts$ = this.posts$.pipe(map(posts => {
-        return this.updatePostInCurrentPost(posts, postId, result.postName);
+        return this.updatePostInCurrentPost(posts, post.id, result.postName);
       }));
     })
       .catch(_ => {
       });
   }
 
-  addPostModal(): void {
+  delete = (post: PostResponseObject): void => {
+    this.postsService.deletePost(post.id).subscribe(_ => {
+      this.posts$ = this.posts$.pipe(map(posts => posts.filter(pst => pst.id !== post.id)));
+    });
+  }
+
+  addPostModal = (): void => {
     const modalRef: NgbModalRef = this.modalService.open(CreatePostModalComponent, {size: 'lg'});
     modalRef.result.then((addedPost: PostResponseObject) => {
       this.posts$ = this.posts$.pipe(map(posts => {
+        posts = posts.filter(post => post.id !== addedPost.id);
         posts.unshift(addedPost);
         this.isCollapsed[0].collapsed = true;
         return posts.slice(0, 7);
@@ -80,14 +80,8 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     });
   }
 
-  changePage(newPageNumber: number): void {
-    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize);
-    this.postsNextPage$ = this.postsService.getPostsPaginated(newPageNumber + 1, this.pageSize);
-    this.filterPosts();
-  }
-
-  toggleCollapse(index: number): void {
-    this.isCollapsed[index].collapsed = !this.isCollapsed[index].collapsed;
+  click = (post: PostResponseObject): void => {
+    this.router.navigate(['/posts/detail', post.id]);
   }
 
   private updatePostInCurrentPost(posts: PostResponseObject[], postId: string, postName: string)

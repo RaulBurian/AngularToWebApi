@@ -8,6 +8,7 @@ import {PostResponse} from './contracts/responses/PostResponse';
 import {CreatePostRequest} from './contracts/requests/CreatePostRequest';
 import {GetCountResponse} from './contracts/responses/GetCountResponse';
 import {PostCreateResponse} from './contracts/responses/PostCreateResponse';
+import {GetPostResponse} from './contracts/responses/GetPostResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,11 @@ export class PostsService {
       .pipe(map(response => {
         return response.data;
       }));
+  }
+
+  getPost(postId: string): Observable<PostResponseObject> {
+    return this.httpClient.get<GetPostResponse>(`${Routes.Post.GET}/${postId}`)
+      .pipe(first(), map(response => response.data));
   }
 
   getPostsPaginated(pageNumber: number, pageSize: number): Observable<PostResponseObject[]> {

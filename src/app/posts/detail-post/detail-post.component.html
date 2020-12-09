@@ -1,0 +1,23 @@
+<div class="content-section overflow-auto">
+  <p class="big text-center">  Here are your post's details</p>
+  <hr>
+  <div *ngIf="post" class="row">
+    <div class="col align-self-center">
+      <div class="row flex-column align-content-between">
+        <div class="col align-content-around font-weight-bold">
+          {{post.name}}:
+        </div>
+        <div class="col">
+          Here would be the description if you actually implemented posts with description
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <app-generic-list
+        [data]="post.tags | stringToGenericData"
+        [numberOfElements]="post.tags.length"
+        [pageSize]="post.tags.length"></app-generic-list>
+    </div>
+  </div>
+  <button class="btn btn-secondary float-right mt-3" type="button" (click)="back()">Back</button>
+</div>
