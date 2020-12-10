@@ -3,6 +3,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CreatePostModalComponent} from './create-post-modal.component';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {BaseCreateComponent} from '../base-create/base-create.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('CreatePostModalComponent', () => {
   let component: CreatePostModalComponent;
@@ -11,11 +13,14 @@ describe('CreatePostModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        CreatePostModalComponent
+        CreatePostModalComponent,
+        BaseCreateComponent
       ],
       imports: [
         HttpClientModule,
-        NgbModule
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule
       ],
       providers: [
         NgbActiveModal
