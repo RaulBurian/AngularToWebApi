@@ -4,6 +4,7 @@ import {RegisterComponent} from './register.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
+import {Component} from '@angular/core';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -18,7 +19,9 @@ describe('RegisterComponent', () => {
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterTestingModule
+        RouterTestingModule.withRoutes([
+          {path: 'home', component: DummyComponent}
+        ])
       ]
     })
       .compileComponents();
@@ -34,3 +37,8 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+@Component({template: ''})
+class DummyComponent {
+}

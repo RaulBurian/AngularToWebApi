@@ -3,13 +3,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './auth/auth.service';
-import {By} from '@angular/platform-browser';
 import {BehaviorSubject} from 'rxjs';
 import {UserModel} from './shared/models/user.model';
 import {SessionError} from './shared/errors/session-error';
-import {Component, DebugElement} from '@angular/core';
+import {Component} from '@angular/core';
 import {UserIsAdminPipe} from './pipes/user-is-admin.pipe';
 import {Location} from '@angular/common';
+import {DOMHelper} from '../testing/DOMHelper';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -45,32 +45,35 @@ describe('AppComponent', () => {
 
   it(`should have a navbar button`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const button: HTMLHeadElement = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button !== null).toBeTruthy();
+    const domHelper = new DOMHelper<AppComponent>(fixture);
+    const buttonText: string = domHelper.singleText('button');
+    expect(buttonText !== null).toBeTruthy();
   });
 
   it(`should show logout button when user is logged in`, () => {
     Helper.simulateLoggedInUserWithRole('User');
     const fixture = TestBed.createComponent(AppComponent);
+    const domHelper = new DOMHelper<AppComponent>(fixture);
     fixture.detectChanges();
-    const buttons: DebugElement[] = fixture.debugElement.queryAll(By.css('.nav-link'));
-    expect(buttons.filter(btn => btn.nativeElement.innerText === 'Logout').length === 1).toBeTruthy();
+    expect(domHelper.countText('.nav-link', 'Logout') === 1).toBeTruthy();
   });
 
   it(`should show tags section when the user is logged in as admin`, () => {
     Helper.simulateLoggedInUserWithRole('Admin');
     const fixture = TestBed.createComponent(AppComponent);
+    const domHelper = new DOMHelper<AppComponent>(fixture);
     fixture.detectChanges();
-    const headers: DebugElement[] = fixture.debugElement.queryAll(By.css('.list-header'));
-    expect(headers.filter(header => header.nativeElement.innerText === 'Tags Section:')).toBeTruthy();
+    const headers: HTMLHeadElement[] = domHelper.allElements('.list-header');
+    expect(headers.filter(header => header.innerText === 'Tags Section:')).toBeTruthy();
   });
 
   it(`should redirect to login when we click logout`, async () => {
     Helper.simulateLoggedInUserWithRole('User');
     const fixture = TestBed.createComponent(AppComponent);
+    const domHelper = new DOMHelper<AppComponent>(fixture);
     const location = TestBed.inject(Location);
     fixture.detectChanges();
-    const logOutButton: HTMLHeadElement = fixture.debugElement.queryAll(By.css('.nav-link'))[0].nativeElement;
+    const logOutButton: HTMLHeadElement = domHelper.singleElement('.nav-link');
     logOutButton.click();
     fixture.detectChanges();
     await fixture.whenStable().then(() => {
