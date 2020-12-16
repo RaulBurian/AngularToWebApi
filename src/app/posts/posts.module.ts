@@ -14,6 +14,7 @@ import {SharedModule} from '../shared/shared.module';
 import { ToListItemPipe } from './pipes/to-list-item.pipe';
 import { DetailPostComponent } from './detail-post/detail-post.component';
 import { StringToGenericDataPipe } from './pipes/string-to-generic-data.pipe';
+import {PostsObservableService} from './posts-observable.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { StringToGenericDataPipe } from './pipes/string-to-generic-data.pipe';
   ],
   providers: [
     PostsService,
+    PostsObservableService
   ]
 })
 export class PostsModule {

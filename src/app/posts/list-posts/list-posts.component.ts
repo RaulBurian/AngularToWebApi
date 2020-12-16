@@ -2,11 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PostsService} from '../posts.service';
 import {Observable} from 'rxjs';
 import {PostResponseObject} from '../contracts/responses/PostResponseObject';
-import {map} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {EditPostComponent} from '../edit-post/edit-post.component';
 import {CreatePostModalComponent} from '../create/create-post-modal/create-post-modal.component';
 import {Router} from '@angular/router';
+import {PostsObservableService} from '../posts-observable.service';
 
 interface ICollapsed {
   collapsed: boolean;
@@ -26,10 +26,14 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   isCollapsed: ICollapsed[] = [];
 
   constructor(private postsService: PostsService,
+              private postsObservableService: PostsObservableService,
               private modalService: NgbModal,
               private router: Router) {
     this.postsNumber$ = this.postsService.getPostsCount();
-    this.posts$ = this.postsService.getPostsPaginated(this.pageNumber, this.pageSize);
+    this.posts$ = this.postsObservableService.currentPosts$;
+    this.postsService.getPostsPaginated(this.pageNumber, this.pageSize).subscribe(posts => {
+      this.postsObservableService.setPosts(posts);
+    });
     Array.from(Array(this.pageSize)).forEach(nr => this.isCollapsed.push({collapsed: true}));
   }
 
@@ -41,7 +45,9 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   changePage(newPageNumber: number): void {
-    this.posts$ = this.postsService.getPostsPaginated(newPageNumber, this.pageSize);
+    this.postsService.getPostsPaginated(newPageNumber, this.pageSize).subscribe(posts => {
+      this.postsObservableService.setPosts(posts);
+    });
   }
 
   filterPost(post: PostResponseObject, key: string): boolean {
@@ -53,9 +59,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.postName = post.name;
     modalRef.componentInstance.postId = post.id;
     modalRef.result.then(result => {
-      this.posts$ = this.posts$.pipe(map(posts => {
-        return this.updatePostInCurrentPost(posts, post.id, result.postName);
-      }));
+      this.postsObservableService.editPost(post.id, result.postName);
     })
       .catch(_ => {
       });
@@ -63,34 +67,21 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   delete(post: PostResponseObject): void {
     this.postsService.deletePost(post.id).subscribe(_ => {
-      this.posts$ = this.posts$.pipe(map(posts => posts.filter(pst => pst.id !== post.id)));
+      this.postsObservableService.removePost(post.id);
     });
   }
 
   addPostModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(CreatePostModalComponent, {size: 'lg'});
     modalRef.result.then((addedPost: PostResponseObject) => {
-      this.posts$ = this.posts$.pipe(map(posts => {
-        posts = posts.filter(post => post.id !== addedPost.id);
-        posts.unshift(addedPost);
-        this.isCollapsed[0].collapsed = true;
-        return posts.slice(0, 7);
-      }));
+      this.isCollapsed[0].collapsed = true;
+      this.postsObservableService.addPost(addedPost);
     }).catch(_ => {
     });
   }
 
   click(post: PostResponseObject): void {
     this.router.navigate(['/posts/detail', post.id]);
-  }
-
-  private updatePostInCurrentPost(posts: PostResponseObject[], postId: string, postName: string)
-    : PostResponseObject[] {
-    const post: PostResponseObject | undefined = posts.find(p => p.id === postId);
-    if (post) {
-      post.name = postName;
-    }
-    return posts;
   }
 
 }
